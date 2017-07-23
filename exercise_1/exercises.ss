@@ -9,8 +9,8 @@
 (+ a b (* a b)) ; 19
 (= a b) ; f
 (if (and (> b a) (< b (* a b)))
-    b
-    a) ; 4
+  b
+  a) ; 4
 (cond ((= a 4) 6)
       ((= b 4) (+ 6 7 a))
       (else 25)) ; 16
@@ -58,3 +58,58 @@
   (cubert-iter 0.0 1.0))
 (cubert 27)
 
+; Exercise 1.11
+; recursive
+(define (f n)
+  (if (< n 3)
+    n
+    (+ (f (- n 1))
+       (* 2 (f (- n 2)))
+       (* 3 (f (- n 3))))))
+(f 6)
+
+; iterative
+(define (f n)
+  (define (f-iter a b c count)
+    (if (< count 3)
+      c
+      (f-iter b c (+ c (* 2 b) (* 3 a)) (- count 1))))
+  (f-iter 0 1 2 n))
+(f 4)
+
+; Exercise 1.12
+(define (pascal x y)
+  (if (or (= x 1) (= x y))
+    1
+    (+ (pascal (- x 1) (- y 1))
+       (pascal x (- y 1)))))
+(pascal 3 5)
+
+; Exercise 1.13
+(define (sqrt x)
+  (define (average x y) (/ (+ x y) 2))
+  (define (improve guess) (average guess (/ x guess)))
+  (define (good-enough? last-guess guess) (< (abs (- last-guess guess)) 0.01))
+  (define (sqrt-iter last-guess guess)
+    (if (good-enough? last-guess guess)
+      guess
+      (sqrt-iter guess (improve guess))))
+  (sqrt-iter 0.0 1.0))
+
+(define (pow x pwr)
+  (cond ((<= pwr 0) 0)
+        ((<= pwr 1) x)
+        ((> pwr 1) (* x (pow x (- pwr 1))))))
+        
+(define (fib n)
+  (define (fib a b n)
+    (if (= n 0)
+      a
+      (fib b (+ a b) (- n 1))))
+  (fib 0 1 n))
+
+(define (calc-fib n)
+  (/ (pow (/ (+ 1 (sqrt 5)) 2) n) (sqrt 5)))
+
+(fib 10)
+(calc-fib 10)

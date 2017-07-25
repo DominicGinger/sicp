@@ -113,3 +113,34 @@
 
 (fib 10)
 (calc-fib 10)
+
+; Exercise 1.16
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (fast-expt (square b) (/ n 2)))
+        (else (* b (fast-expt b (- n 1))))))
+(fast-expt 2 8)
+
+; Exercise 1.17
+(define (fast-multi x y)
+  (define (double x) (+ x x))
+  (define (halve x) (/ x 2))
+  (cond ((= y 0) 0)
+        ((even? y) (double (fast-multi x (halve y))))
+        (else (+ x (fast-multi x (- y 1))))))
+
+(fast-multi 31 300)
+
+; Exercise 1.18
+(define (fast-multi x y)
+  (define (double x) (+ x x))
+  (define (halve x) (/ x 2))
+  (define (fast-multi-iter x y z)
+    (cond ((= y 0) z)
+          ((even? y) (fast-multi-iter (double x) (halve y) z))
+          (else (fast-multi-iter x (- y 1) (+ x z)))))
+  (fast-multi-iter x y 0))
+(fast-multi 31 300)
+
+
+

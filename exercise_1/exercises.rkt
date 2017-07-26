@@ -150,16 +150,19 @@
         ((even? count)
          (fib-iter a
                    b
-                   (+ (* b q) (* b q) (* b p))
-                   (+ (* a p) (* b q))
+                   (+ (* p p) (* q q))
+                   (+ (* q q) (* 2 q p))
                    (/ count 2)))
-        (else (fib-iter (+ (* b q) (* a q) (* a p))
-                        (+ (* b p) (* a q))
+        (else (fib-iter (abs (+ (* b q) (* a q) (* a p)))
+                        (abs (+ (* b p) (* a q)))
                         p
                         q
                         (- count 1)))))
+(fib 1)
+(fib 2)
 (fib 3)
 (fib 4)
 (fib 5)
 (fib 6)
 (fib 7)
+

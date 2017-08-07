@@ -166,3 +166,40 @@
 (fib 6)
 (fib 7)
 
+;; Exercise 1.21
+(define (smallest-divisor n)
+  (find-divisor n 2))
+(define (find-divisor n test-divisor)
+  (cond ((> (* test-divisor test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (+ test-divisor 1)))))
+(define (divides? a b)
+  (= (remainder b a) 0))
+
+(smallest-divisor 199) ; 199
+(smallest-divisor 1999) ; 1999
+(smallest-divisor 19999) ; 7
+
+(define (prime? n)
+  (= n (smallest-divisor n)))
+
+;; Exercise 1.22
+
+(define (timed-prime-test n)
+  (newline)
+  (display n)
+  (start-prime-test n (current-milliseconds)))
+(define (start-prime-test n start-time)
+  (if (prime? n)
+    (report-prime (- (current-milliseconds) start-time))
+    (newline)
+    ))
+(define (report-prime elapsed-time)
+  (display " *** ")
+  (display elapsed-time)
+  (newline))
+
+(timed-prime-test 2011309)
+
+
+

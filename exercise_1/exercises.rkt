@@ -201,5 +201,36 @@
 
 (timed-prime-test 2011309)
 
+(define (search-for-primes n count)
+  (if (= count 0)
+    (values)
+    (if (prime? n)
+      (begin
+        (newline)
+        (display n)
+        (search-for-primes (+ n 1) (- count 1)))
+      (search-for-primes (+ n 1) count))))
 
+(search-for-primes 1000 3)
+(search-for-primes 10000 3)
+(search-for-primes 100000 3)
+(search-for-primes 1000000 3)
+
+
+;; Exercise 1.23
+
+(define (smallest-divisor n)
+  (find-divisor n 2))
+(define (find-divisor n test-divisor)
+  (cond ((> (* test-divisor test-divisor) n) n)
+        ((divides? test-divisor n) test-divisor)
+        (else (find-divisor n (next test-divisor)))))
+(define (divides? a b)
+  (= (remainder b a) 0))
+(define (next x)
+  (if (= x 2) 3 (+ x 2)))
+
+(smallest-divisor 199) ; 199
+(smallest-divisor 1999) ; 1999
+(smallest-divisor 19999) ; 7
 

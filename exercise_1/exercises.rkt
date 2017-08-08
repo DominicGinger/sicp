@@ -211,11 +211,13 @@
         (search-for-primes (+ n 1) (- count 1)))
       (search-for-primes (+ n 1) count))))
 
-(search-for-primes 1000 3)
-(search-for-primes 10000 3)
-(search-for-primes 100000 3)
-(search-for-primes 1000000 3)
-
+(define start (current-milliseconds))
+(search-for-primes 1000 1000)
+(search-for-primes 10000 1000)
+(search-for-primes 100000 1000)
+(search-for-primes 1000000 1000)
+(define finish (current-milliseconds))
+(display (- finish start))
 
 ;; Exercise 1.23
 
@@ -234,3 +236,55 @@
 (smallest-divisor 1999) ; 1999
 (smallest-divisor 19999) ; 7
 
+;; Exercise 1.24
+(define (square x) (* x x))
+(define (expmod base exp m)
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (remainder (square (expmod base (/ exp 2) m))
+                    m))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+(define (fermat-test n)
+  (define (try-it a)
+    (= (expmod a n n) a))
+  (try-it (+ 1 (random (- n 1)))))
+(define (fast-prime? n times)
+  (cond ((= times 0) true)
+        ((fermat-test n) (fast-prime? n (- times 1)))
+        (else false)))
+
+(define (search-for-fast-primes n count)
+  (if (= count 0)
+    (values)
+    (if (fast-prime? n 1)
+      (begin
+        (newline)
+        (display n)
+        (search-for-fast-primes (+ n 1) (- count 1)))
+      (search-for-fast-primes (+ n 1) count))))
+
+(define start (current-milliseconds))
+(search-for-fast-primes 1000 1000)
+(search-for-fast-primes 10000 1000)
+(search-for-fast-primes 100000 1000)
+(search-for-fast-primes 1000000 1000)
+(define finish (current-milliseconds))
+(newline)
+(display (- finish start))
+
+
+;; Exercise 1.27
+(define (square x) (* x x))
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even? n) (fast-expt (square b) (/ n 2)))
+        (else (* b (fast-expt b (- n 1))))))
+(define (test-fermat-test n a)
+  (= (fast-expt a n) (modulo a n)))
+
+(test-fermat-test 5 4)  
+(test-fermat-test 5 3)  
+(test-fermat-test 5 2)  
+(test-fermat-test 5 1)  

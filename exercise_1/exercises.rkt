@@ -274,17 +274,17 @@
 (newline)
 (display (- finish start))
 
-
 ;; Exercise 1.27
-(define (square x) (* x x))
-(define (fast-expt b n)
-  (cond ((= n 0) 1)
-        ((even? n) (fast-expt (square b) (/ n 2)))
-        (else (* b (fast-expt b (- n 1))))))
-(define (test-fermat-test n a)
-  (= (fast-expt a n) (modulo a n)))
+(define (fooled n)
+  (display (fermat-test n))
+  (display " : ")
+  (display (prime? n))
+  (newline))
 
-(test-fermat-test 5 4)  
-(test-fermat-test 5 3)  
-(test-fermat-test 5 2)  
-(test-fermat-test 5 1)  
+(fooled 561)  
+(fooled 1105)  
+(fooled 1729)  
+(fooled 2465)  
+(fooled 2821)  
+(fooled 6601)  
+

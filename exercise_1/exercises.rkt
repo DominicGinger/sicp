@@ -288,3 +288,38 @@
 (fooled 2821)  
 (fooled 6601)  
 
+;; Exercise 1.28
+(define (square x) (* x x))
+(define (expmod base exp m)
+  (define (check-non-trivial x)
+    (define y (remainder (square x) m))
+    (if (and (= y 1) (not (= x 1)) (not (= x (- m 1))))
+      0
+      y))
+  (cond ((= exp 0) 1)
+        ((even? exp)
+         (check-non-trivial (expmod base (/ exp 2) m)))
+        (else
+         (remainder (* base (expmod base (- exp 1) m))
+                    m))))
+
+(define (miller-rabin-test n) 
+   (define (try-it a) 
+     (define (check-it x) 
+       (and (not (= x 0)) (= x 1))) 
+     (check-it (expmod a (- n 1) n))) 
+   (try-it (+ 1 (random (- n 1))))) 
+
+(define (fooled n)
+  (display (miller-rabin-test n))
+  (display " : ")
+  (display (prime? n))
+  (newline))
+
+(fooled 561)  
+(fooled 1105)  
+(fooled 1729)  
+(fooled 2465)  
+(fooled 2821)  
+(fooled 6601)  
+

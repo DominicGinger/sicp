@@ -27,4 +27,20 @@
 
 ;; Exercise 1.29
 
+(define (integral f a b dx)
+  (define (add-dx x) (+ x dx))
+  (* (sum f (+ a (/ dx 2.0)) add-dx b)
+     dx))
+(integral cube 0 1 0.01)
+
+(define (simpsons-integral f a b n)
+  (define h (/ (- b a) n))
+  (define (yk k) (f (+ a (* h k))))
+  (define (term k)
+     (* (cond ((or (= k 0) (= k 1)) 1)
+             ((= (remainder k 2) 0) 2)
+             (else 4)) (yk k)))
+  (define (add-one x) (+ x 1))
+  (* (/ h 3) (sum term 0 add-one n)))
+(simpsons-integral cube 0 1 1000)
 

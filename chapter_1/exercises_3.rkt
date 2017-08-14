@@ -44,3 +44,22 @@
   (* (/ h 3) (sum term 0 add-one n)))
 (simpsons-integral cube 0 1 1000)
 
+;; Exercise 1.30
+(define (sum term a next b)
+  (define (iter a result)
+  (if (> a b)
+    result
+    (iter (next a) (+ (term a) result))))
+  (iter a 0))
+
+(define (square x) (* x x))
+(define (sum-squares a b)
+  (sum square a inc b))
+
+(define (cube x) (* x x x))
+(define (sum-cubes a b)
+  (sum cube a inc b))
+
+(sum-squares 1 10)
+(sum-cubes 1 10)
+

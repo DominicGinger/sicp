@@ -63,3 +63,60 @@
 (sum-squares 1 10)
 (sum-cubes 1 10)
 
+;; Exercise 1.32
+
+; recursive
+(define (accumulate combiner null-value term a next b) 
+  (if (> a b) null-value 
+    (combiner (term a) (accumulate combiner null-value term (next a) next b)))) 
+
+;iterative
+(define (accumulate combiner null-value term a next b) 
+  (define (iter a res) 
+    (if (> a b) res 
+      (iter (next a) (combiner res (term a))))) 
+  (iter a null-value)) 
+
+(define (sum term a next b) (accumulate + 0 term a next b)) 
+(define (product term a next b) (accumulate * 1 term a next b)) 
+
+(sum square 1 inc 10)
+
+;; Exercise 1.33
+(define (filtered-accumulate combiner null-value term a next b filter) 
+   (define (iter a result) 
+     (cond ((> a b) result) 
+           ((filter a) (iter (next a) (combiner result (term a)))) 
+           (else (iter (next a) result)))) 
+   (iter a null-value)) 
+
+;; Exercise 1.35
+(define tolerance 0.00001)
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+(fixed-point cos 1.0)
+(fixed-point (lambda (x) (+ 1 (/ 1 x))) 1.0)
+
+;; Exercise 1.36
+(define (fixed-point f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (displayln guess)
+    (let ((next (f guess)))
+      (if (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+(define tolerance 0.00001)
+(fixed-point (lambda (x)
+               (/ (+ x (/ (log 1000.00) (log x))) 2)) 2)
+
+

@@ -59,12 +59,20 @@
   (if (> a b)
       null-value
       (combiner (term a)
-         (sum term (next a) next b))))
+         (accumulate combiner null-value term (next a) next b))))
 (define (inc x) (+ x 1))
 (define (square x) (* x x))
 (accumulate + 0 square 1 inc 5)
 
 ;; iterative accumulator
+(define (accumulate combiner null-value term a next b)
+  (define (iter a res)
+    (if (> a b)
+      res
+      (iter (next a) (combiner res (term a))))))
+(define (inc x) (+ x 1))
+(define (square x) (* x x))
+(accumulate + 0 square 1 inc 5)
 
 ;; Exercise 1.32
 

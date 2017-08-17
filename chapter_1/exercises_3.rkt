@@ -52,14 +52,16 @@
     (iter (next a) (+ (term a) result))))
   (iter a 0))
 
+;; Exercise 1.31
+
+;; recursive accumulator
+(define (accumulate combiner null-value term a next b)
+  (if (> a b)
+      null-value
+      (combiner (term a)
+         (sum term (next a) next b))))
+(define (inc x) (+ x 1))
 (define (square x) (* x x))
-(define (sum-squares a b)
-  (sum square a inc b))
+(accumulate + 0 square 1 inc 5)
 
-(define (cube x) (* x x x))
-(define (sum-cubes a b)
-  (sum cube a inc b))
-
-(sum-squares 1 10)
-(sum-cubes 1 10)
-
+;; iterative accumulator
